@@ -25,7 +25,7 @@ type Number struct {
 // GetGeoPointValue extracts a geopoint (*latlng.LatLng) value from a FirestoreValue
 func (v FirestoreValue) GetGeoPointValue(name string) (*latlng.LatLng, error) {
 	if mappedField, ok := getMappedFieldFromFirestoreValue(name, v); ok {
-		if geopoint, ok := mappedField[`json:"geoPointValue"`].(*latlng.LatLng); ok {
+		if geopoint, ok := mappedField["geoPointValue"].(*latlng.LatLng); ok {
 			return geopoint, nil
 		}
 	}
@@ -84,12 +84,6 @@ func (v FirestoreValue) GetIntegerArray(name string) (*[]int, error) {
 	}
 }
 
-func getMappedFieldFromFirestoreValue(name string, v FirestoreValue) (map[string]interface{}, bool) {
-	fields, ok := v.Fields.(map[string]interface{})
-	mapped, ok := fields[name].(map[string]interface{})
-	return mapped, ok
-}
-
 func getArrayFromFirestoreValue(name string, v FirestoreValue) ([]interface{}, error) {
 	if mappedField, ok := getMappedFieldFromFirestoreValue(name, v); ok {
 		arrayWrapper := mappedField["arrayValue"].(map[string]interface{})
@@ -98,4 +92,10 @@ func getArrayFromFirestoreValue(name string, v FirestoreValue) ([]interface{}, e
 		}
 	}
 	return nil, fmt.Errorf("Error extracting value named %s from %+v. Also check to make sure \"arrayValue\" and \"values\" are still a part of FirestoreEvent.FirestoreValue Json", name, v.Fields)
+}
+
+func getMappedFieldFromFirestoreValue(name string, v FirestoreValue) (map[string]interface{}, bool) {
+	fields, ok := v.Fields.(map[string]interface{})
+	mapped, ok := fields[name].(map[string]interface{})
+	return mapped, ok
 }
