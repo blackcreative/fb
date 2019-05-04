@@ -3,8 +3,6 @@ package fb
 import (
 	"fmt"
 	"strconv"
-
-	"google.golang.org/genproto/googleapis/type/latlng"
 )
 
 // FirestoreValue holds Firestore fields.
@@ -22,11 +20,19 @@ type Number struct {
 	Value int `json:"numberValue"`
 }
 
+type GeoPoint struct {
+	Latitude  float64 `json:"latitude"`
+	Longitude float64 `json:"longitude"`
+}
+
 // GetGeoPointValue extracts a geopoint (*latlng.LatLng) value from a FirestoreValue
-func (v FirestoreValue) GetGeoPointValue(name string) (*latlng.LatLng, error) {
+func (v FirestoreValue) GetGeoPointValue(name string) (*GeoPoint, error) {
 	if mappedField, ok := getMappedFieldFromFirestoreValue(name, v); ok {
-		if geopoint, ok := mappedField["geoPointValue"].(*latlng.LatLng); ok {
-			return geopoint, nil
+		if geoPointWrapper, ok := mappedField["geoPointValue"].(map[string]float64); ok {
+			var geoPoint = GeoPoint{
+				Latitude:  geoPointWrapper["latitude"],
+				Longitude: geoPointWrapper["longitude"]}
+			return &geoPoint, nil
 		}
 	}
 	return nil, fmt.Errorf("Error extracting value named %s from %+v as geopoint. Also check to make sure \"stringValue\" is still a part of FirestoreEvent.FirestoreValue Json", name, v.Fields)
