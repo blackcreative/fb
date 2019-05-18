@@ -1,6 +1,7 @@
 package fbUtil
 
-func flatten(firestoreFields interface{}) map[string]interface{} {
+// Flatten flattens a FirestoreValue.Fields object
+func Flatten(firestoreFields interface{}) map[string]interface{} {
 	flat := make(map[string]interface{})
 	if mapped, ok := firestoreFields.(map[string]interface{}); ok {
 		for key, meta := range mapped {
@@ -9,7 +10,7 @@ func flatten(firestoreFields interface{}) map[string]interface{} {
 				switch {
 				case firestoreType == "mapValue":
 					if mapMapped, ok := value.(map[string]interface{}); ok {
-						flat[key] = flatten(mapMapped["fields"])
+						flat[key] = Flatten(mapMapped["fields"])
 					}
 				case firestoreType == "arrayValue":
 					flatArray := make([]interface{}, 0)
