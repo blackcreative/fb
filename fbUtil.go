@@ -16,11 +16,12 @@ func Flatten(firestoreFields interface{}) map[string]interface{} {
 				case firestoreType == "arrayValue":
 					flatArray := make([]interface{}, 0)
 					arrayValuesMapped := value.(map[string]interface{})
-					array := arrayValuesMapped["values"].([]interface{})
-					for _, element := range array {
-						elementMapped := element.(map[string]interface{})
-						for _, elementValue := range elementMapped {
-							flatArray = append(flatArray, elementValue)
+					if array, ok := arrayValuesMapped["values"].([]interface{}); ok {
+						for _, element := range array {
+							elementMapped := element.(map[string]interface{})
+							for _, elementValue := range elementMapped {
+								flatArray = append(flatArray, elementValue)
+							}
 						}
 					}
 					flat[key] = flatArray
