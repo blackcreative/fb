@@ -2,8 +2,9 @@ package fbUtil
 
 // Flatten flattens a FirestoreValue.Fields object
 func Flatten(firestoreFields interface{}) map[string]interface{} {
-	flat := make(map[string]interface{})
+	var flat map[string]interface{}
 	if mapped, ok := firestoreFields.(map[string]interface{}); ok {
+		flat = make(map[string]interface{})
 		for key, meta := range mapped {
 			metaMapped := meta.(map[string]interface{})
 			for firestoreType, value := range metaMapped {
