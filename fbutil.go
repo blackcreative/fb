@@ -1,4 +1,4 @@
-package fbUtil
+package fbutil
 
 // Flatten flattens a FirestoreValue.Fields object
 func Flatten(firestoreFields interface{}) map[string]interface{} {
