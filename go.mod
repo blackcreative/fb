@@ -1,3 +1,3 @@
-module github.com/blackcreative/fbUtil
+module github.com/blackcreative/fbutil
 
 go 1.12
