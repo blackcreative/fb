@@ -26,9 +26,12 @@ func Flatten(firestoreFields interface{}) map[string]interface{} {
 					}
 					flat[key] = flatArray
 				case firestoreType == "integerValue" || firestoreType == "doubleValue" ||
-					firestoreType == "booleanValue" || firestoreType == "stringValue" ||
-					firestoreType == "timestampValue":
+					firestoreType == "booleanValue" || firestoreType == "stringValue":
 					flat[key] = value
+				case firestoreType == "timestampValue":
+					if t, err := time.Parse("2006-01-02T15:04:05.000Z", value); err == nil {
+						flat[key] = t
+					}
 				}
 			}
 		}
