@@ -26,7 +26,8 @@ func Flatten(firestoreFields interface{}) map[string]interface{} {
 					}
 					flat[key] = flatArray
 				case firestoreType == "integerValue" || firestoreType == "doubleValue" ||
-					firestoreType == "booleanValue" || firestoreType == "stringValue":
+					firestoreType == "booleanValue" || firestoreType == "stringValue" ||
+					firestoreType == "timestampValue":
 					flat[key] = value
 				}
 			}
