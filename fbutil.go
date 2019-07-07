@@ -1,5 +1,7 @@
 package fbutil
 
+import "time"
+
 // Flatten flattens a FirestoreValue.Fields object
 func Flatten(firestoreFields interface{}) map[string]interface{} {
 	var flat map[string]interface{}
