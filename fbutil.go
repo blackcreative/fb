@@ -22,7 +22,7 @@ func Flatten(firestoreFields interface{}) map[string]interface{} {
 							elementMapped := element.(map[string]interface{})
 							for _, elementValue := range elementMapped {
 								if elementValueMapped, ok := elementValue.(map[string]interface{}); ok {
-									flat[key] = Flatten(elementValueMapped["fields"])
+									flatArray = append(flatArray, Flatten(elementValueMapped["fields"]))
 								} else {
 									flatArray = append(flatArray, elementValue)
 								}
